@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BCA Section G - Student Portal | JBKP</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="bg-slate-900 text-white min-h-screen flex items-center justify-center p-4">
+
+  <!-- ================= LOGIN SECTION ================= -->
+  <div id="login-section" class="w-full max-w-md bg-slate-800 p-6 rounded-2xl shadow-xl border border-slate-700">
+    <div class="text-center mb-6">
+      <h1 class="text-2xl font-bold text-blue-400">BCA Section G Portal</h1>
+      <p class="text-slate-400 text-sm mt-1">JB Knowledge Park, Faridabad</p>
+    </div>
+
+    <form id="login-form" onsubmit="checkLogin(); return false;" class="space-y-4">
+      <div>
+        <label class="block text-xs font-semibold uppercase text-slate-400 mb-1">Phone Number</label>
+        <input type="tel" id="phone-input" required placeholder="Enter 10-digit phone number"
+          class="w-full px-4 py-2.5 bg-slate-900 border border-slate-700 rounded-lg text-white focus:outline-none focus:border-blue-500 transition">
+      </div>
+
+      <div>
+        <label class="block text-xs font-semibold uppercase text-slate-400 mb-1">Password</label>
+        <input type="password" id="password-input" required placeholder="Enter password"
+          class="w-full px-4 py-2.5 bg-slate-900 border border-slate-700 rounded-lg text-white focus:outline-none focus:border-blue-500 transition">
+      </div>
+
+      <div id="error-msg" class="hidden text-red-400 text-sm text-center font-medium bg-red-900/30 p-2 rounded-lg border border-red-800"></div>
+
+      <button type="submit" id="login-btn"
+        class="w-full py-3 bg-blue-600 hover:bg-blue-500 text-white font-semibold rounded-lg shadow-lg hover:shadow-blue-500/30 transition duration-200">
+        Login to Dashboard
+      </button>
+    </form>
+  </div>
+
+  <!-- ================= MAIN DASHBOARD SECTION ================= -->
+  <div id="dashboard-section" class="hidden w-full max-w-4xl bg-slate-800 p-4 sm:p-6 rounded-2xl shadow-2xl border border-slate-700 space-y-6">
+    
+    <!-- Top Header -->
+    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 border-b border-slate-700 pb-4">
+      <div>
+        <h2 class="text-2xl font-bold text-white">Welcome, <span id="student-name" class="text-blue-400">Student</span>! 👋</h2>
+        <p class="text-slate-400 text-sm">BCA 1st Year | Section G | JBKP</p>
+      </div>
+      <button onclick="logout()" class="px-4 py-2 bg-red-600/20 text-red-400 hover:bg-red-600 hover:text-white border border-red-600/40 rounded-lg text-sm font-semibold transition">
+        Logout
+      </button>
+    </div>
+
+    <!-- 📌 TAB NAVIGATION BAR -->
+    <div class="flex flex-wrap border-b border-slate-700 gap-2">
+      <button id="tab-btn-timetable" onclick="switchTab('timetable')" class="px-4 py-2.5 font-bold text-xs sm:text-sm border-b-2 border-blue-500 text-blue-400 flex items-center gap-2 transition">
+        <i class="fa-solid fa-calendar-days"></i> Time Table
+      </button>
+      <button id="tab-btn-subjects" onclick="switchTab('subjects')" class="px-4 py-2.5 font-bold text-xs sm:text-sm border-b-2 border-transparent text-slate-400 hover:text-emerald-400 flex items-center gap-2 transition">
+        <i class="fa-solid fa-book-open"></i> Subjects & Notes 📚
+      </button>
+      <button id="tab-btn-links" onclick="switchTab('links')" class="px-4 py-2.5 font-bold text-xs sm:text-sm border-b-2 border-transparent text-slate-400 hover:text-purple-400 flex items-center gap-2 transition">
+        <i class="fa-solid fa-link"></i> College Links
+      </button>
+    </div>
+
+    <!-- ================= TAB 1: TIME TABLE ================= -->
+    <div id="tab-timetable" class="space-y-6">
+      <div class="bg-slate-900 p-6 rounded-xl border border-slate-700 flex flex-col items-center text-center">
+        <div class="max-w-md">
+          <h3 class="text-xl font-bold text-blue-400 mb-2 flex items-center justify-center gap-2">
+            <i class="fa-solid fa-calendar-days"></i> Official Class Time Table
+          </h3>
+          <p class="text-slate-400 text-xs mb-6">Section G ki class schedule dekhne ke liye niche click karein.</p>
+        </div>
+        <button onclick="openModal()" class="px-6 py-3 bg-blue-600 hover:bg-blue-500 text-white font-semibold rounded-lg text-sm transition flex items-center gap-2 shadow-lg">
+          <i class="fa-solid fa-image"></i> View Full Time Table Photo
+        </button>
+      </div>
+    </div>
+
+    <!-- ================= TAB 2: SUBJECTS, SYLLABUS & NOTES HUB ================= -->
+    <div id="tab-subjects" class="hidden space-y-4">
+      <div class="mb-2">
+        <h3 class="text-lg font-bold text-emerald-400 flex items-center gap-2">
+          <i class="fa-solid fa-book"></i> Semester 1 Subjects Hub
+        </h3>
+        <p class="text-slate-400 text-xs">Maths, Hindi aur baaki subjects ke syllabus aur notes yahan milenge.</p>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+
+        <!-- 📐 Mathematics (Sem 1) -->
+        <div class="bg-slate-900 p-4 rounded-xl border border-slate-700 flex flex-col justify-between">
+          <div>
+            <span class="text-xs font-semibold px-2 py-0.5 bg-emerald-500/20 text-emerald-300 rounded border border-emerald-500/30">Sem 1</span>
+            <h4 class="text-base font-bold text-white mt-2">Mathematics / MFCS</h4>
+            <p class="text-slate-400 text-xs mt-1">Syllabus aur notes document available hain.</p>
+          </div>
+          <div class="mt-4 flex gap-2">
+            <a href="https://docs.google.com/document/d/1T0S9hZH4oQklGAJFCxoaNo25zX_CHbbt/preview" target="_blank" class="flex-1 py-2 bg-slate-800 hover:bg-slate-700 text-emerald-400 border border-slate-700 rounded-lg text-xs font-semibold text-center transition">
+              <i class="fa-solid fa-file-lines"></i> View Document
+            </a>
+            <a href="https://docs.google.com/document/d/1T0S9hZH4oQklGAJFCxoaNo25zX_CHbbt/edit?usp=sharing" target="_blank" class="flex-1 py-2 bg-emerald-600/20 hover:bg-emerald-600 text-emerald-300 hover:text-white border border-emerald-500/40 rounded-lg text-xs font-semibold text-center transition">
+              <i class="fa-solid fa-external-link"></i> Open Editor
+            </a>
+          </div>
+        </div>
+
+        <!-- 🇮🇳 Hindi (Sem 1) -->
+        <div class="bg-slate-900 p-4 rounded-xl border border-slate-700 flex flex-col justify-between">
+          <div>
+            <span class="text-xs font-semibold px-2 py-0.5 bg-purple-500/20 text-purple-300 rounded border border-purple-500/30">Sem 1</span>
+            <h4 class="text-base font-bold text-white mt-2">Hindi Communication</h4>
+            <p class="text-slate-400 text-xs mt-1">Syllabus aur notes PDF available hain.</p>
+          </div>
+          <div class="mt-4 flex gap-2">
+            <a href="https://drive.google.com/file/d/1vPWyZ03GUMiG6GfzsfHpbX_sUqPVNGA5/view?usp=drivesdk" target="_blank" class="flex-1 py-2 bg-slate-800 hover:bg-slate-700 text-purple-400 border border-slate-700 rounded-lg text-xs font-semibold text-center transition">
+              <i class="fa-solid fa-file-pdf"></i> View Syllabus
+            </a>
+            <a href="https://drive.google.com/file/d/1t_P6ULexfWtlZpzZlVXiR-cLw_Xwquk9/view?usp=drivesdk" target="_blank" class="flex-1 py-2 bg-purple-600/20 hover:bg-purple-600 text-purple-300 hover:text-white border border-purple-500/40 rounded-lg text-xs font-semibold text-center transition">
+              <i class="fa-solid fa-download"></i> Notes PDF
+            </a>
+          </div>
+        </div>
+
+        <!-- 💻 Computer Architecture (CA) -->
+        <div class="bg-slate-900 p-4 rounded-xl border border-slate-700 flex flex-col justify-between">
+          <div>
+            <span class="text-xs font-semibold px-2 py-0.5 bg-blue-500/20 text-blue-300 rounded border border-blue-500/30">Sem 1</span>
+            <h4 class="text-base font-bold text-white mt-2">Computer Architecture (CA)</h4>
+            <p class="text-slate-400 text-xs mt-1">Assignments & material coming soon.</p>
+          </div>
+          <div class="mt-4">
+            <span class="block w-full py-2 bg-slate-800 text-slate-500 border border-slate-700/50 rounded-lg text-xs text-center font-medium">
+              Materials Updating...
+            </span>
+          </div>
+        </div>
+
+        <!-- 📊 Problem Solving Tools (PST) -->
+        <div class="bg-slate-900 p-4 rounded-xl border border-slate-700 flex flex-col justify-between">
+          <div>
+            <span class="text-xs font-semibold px-2 py-0.5 bg-amber-500/20 text-amber-300 rounded border border-amber-500/30">Sem 1</span>
+            <h4 class="text-base font-bold text-white mt-2">Problem Solving Tools (PST)</h4>
+            <p class="text-slate-400 text-xs mt-1">Assignments & material coming soon.</p>
+          </div>
+          <div class="mt-4">
+            <span class="block w-full py-2 bg-slate-800 text-slate-500 border border-slate-700/50 rounded-lg text-xs text-center font-medium">
+              Materials Updating...
+            </span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ================= TAB 3: COLLEGE LINKS ================= -->
+    <div id="tab-links" class="hidden space-y-4">
+      <div class="mb-2">
+        <h3 class="text-lg font-bold text-purple-400 flex items-center gap-2">
+          <i class="fa-solid fa-link"></i> Quick College Links
+        </h3>
+        <p class="text-slate-400 text-xs">Important portals aur official websites.</p>
+      </div>
+
+      <div class="space-y-2">
+        <a href="https://jbknowledgepark.com" target="_blank" class="flex items-center justify-between p-3 bg-slate-900 hover:bg-slate-800 border border-slate-700 rounded-xl text-xs font-semibold text-slate-200 transition">
+          <span class="flex items-center gap-2.5 text-sm"><i class="fa-solid fa-globe text-blue-400"></i> JB Knowledge Park Official Website</span>
+          <i class="fa-solid fa-arrow-up-right-from-square text-slate-400 text-xs"></i>
+        </a>
+
+        <a href="https://jbknowledgepark.com" target="_blank" class="flex items-center justify-between p-3 bg-slate-900 hover:bg-slate-800 border border-slate-700 rounded-xl text-xs font-semibold text-slate-200 transition">
+          <span class="flex items-center gap-2.5 text-sm"><i class="fa-solid fa-user-lock text-emerald-400"></i> Student ERP Portal Login</span>
+          <i class="fa-solid fa-arrow-up-right-from-square text-slate-400 text-xs"></i>
+        </a>
+
+        <a href="https://drive.google.com" target="_blank" class="flex items-center justify-between p-3 bg-slate-900 hover:bg-slate-800 border border-slate-700 rounded-xl text-xs font-semibold text-slate-200 transition">
+          <span class="flex items-center gap-2.5 text-sm"><i class="fa-solid fa-folder-open text-amber-400"></i> College Notes & Materials Drive</span>
+          <i class="fa-solid fa-arrow-up-right-from-square text-slate-400 text-xs"></i>
+        </a>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ================= TIME TABLE PHOTO MODAL ================= -->
+  <div id="timetable-modal" class="hidden fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4 z-50">
+    <div class="bg-slate-800 p-4 rounded-2xl max-w-3xl w-full border border-slate-700 relative flex flex-col items-center">
+      <button onclick="closeModal()" class="absolute top-3 right-3 text-slate-400 hover:text-white text-xl font-bold px-2">✕</button>
+      <h3 class="text-lg font-bold text-blue-400 mb-3">Official Class Time Table</h3>
+      
+      <div class="w-full flex flex-col items-center">
+        <img id="tt-img" 
+             src="https://lh3.googleusercontent.com/d/1jQuTlQSsLbGsEdYz_nqDet4jfxtIRE4L" 
+             onerror="handleImageError(this)" 
+             alt="Class Time Table" 
+             class="max-h-[65vh] object-contain rounded-lg border border-slate-700">
+        
+        <a id="tt-direct-link" href="https://drive.google.com/file/d/1jQuTlQSsLbGsEdYz_nqDet4jfxtIRE4L/view?usp=sharing" target="_blank" 
+           class="mt-4 inline-flex items-center gap-2 px-4 py-2 bg-blue-600 hover:bg-blue-500 text-white font-semibold rounded-lg text-xs transition">
+          <i class="fa-solid fa-arrow-up-right-from-square"></i> Open Photo in Google Drive
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= JAVASCRIPT LOGIC ================= -->
+  <script>
+    // STUDENT DATABASE (Strictly Untouched & Secure)
+    const studentDatabase = [
+      { phone: "9310451030", pass: "7755", name: "Ayush Rawat" },
+      { phone: "9650136145", pass: "0000", name: "Ayush Phone 2" },
+      { phone: "7678428687", pass: "2632482431", name: "Gagan" },
+      { phone: "9266382932", pass: "1122", name: "Divyanshu Negi" },
+      { phone: "9871138363", pass: "21370", name: "Adith" }
+    ];
+
+    let currentStudent = null;
+
+    document.addEventListener("DOMContentLoaded", function() {
+      const savedUser = localStorage.getItem('bca_logged_in_user');
+      if (savedUser) {
+        try {
+          currentStudent = JSON.parse(savedUser);
+          showDashboard(currentStudent.name);
+        } catch(e) { showLogin(); }
+      } else { showLogin(); }
+    });
+
+    function showLogin() {
+      document.getElementById('dashboard-section').classList.add('hidden');
+      document.getElementById('login-section').classList.remove('hidden');
+    }
+
+    function checkLogin() {
+      const phoneInput = document.getElementById('phone-input').value.trim();
+      const passInput = document.getElementById('password-input').value.trim();
+      const errorMsg = document.getElementById('error-msg');
+      
+      const foundStudent = studentDatabase.find(s => s.phone.trim() === phoneInput && s.pass.trim() === passInput);
+
+      if (foundStudent) {
+        errorMsg.classList.add('hidden');
+        currentStudent = foundStudent;
+        localStorage.setItem('bca_logged_in_user', JSON.stringify(foundStudent));
+        showDashboard(foundStudent.name);
+      } else {
+        errorMsg.innerText = "Invalid Phone Number or Password!";
+        errorMsg.classList.remove('hidden');
+      }
+    }
+
+    function showDashboard(name) {
+      document.getElementById('login-section').classList.add('hidden');
+      document.getElementById('dashboard-section').classList.remove('hidden');
+      document.getElementById('student-name').innerText = name;
+    }
+
+    function logout() {
+      localStorage.removeItem('bca_logged_in_user');
+      currentStudent = null;
+      showLogin();
+    }
+
+    // TAB SWITCHING LOGIC
+    function switchTab(tabName) {
+      const tabTimetable = document.getElementById('tab-timetable');
+      const tabSubjects = document.getElementById('tab-subjects');
+      const tabLinks = document.getElementById('tab-links');
+
+      const btnTimetable = document.getElementById('tab-btn-timetable');
+      const btnSubjects = document.getElementById('tab-btn-subjects');
+      const btnLinks = document.getElementById('tab-btn-links');
+
+      tabTimetable.classList.add('hidden');
+      tabSubjects.classList.add('hidden');
+      tabLinks.classList.add('hidden');
+
+      btnTimetable.className = "px-4 py-2.5 font-bold text-xs sm:text-sm border-b-2 border-transparent text-slate-400 hover:text-blue-400 flex items-center gap-2 transition";
+      btnSubjects.className = "px-4 py-2.5 font-bold text-xs sm:text-sm border-b-2 border-transparent text-slate-400 hover:text-emerald-400 flex items-center gap-2 transition";
+      btnLinks.className = "px-4 py-2.5 font-bold text-xs sm:text-sm border-b-2 border-transparent text-slate-400 hover:text-purple-400 flex items-center gap-2 transition";
+
+      if (tabName === 'timetable') {
+        tabTimetable.classList.remove('hidden');
+        btnTimetable.className = "px-4 py-2.5 font-bold text-xs sm:text-sm border-b-2 border-blue-500 text-blue-400 flex items-center gap-2 transition";
+      } else if (tabName === 'subjects') {
+        tabSubjects.classList.remove('hidden');
+        btnSubjects.className = "px-4 py-2.5 font-bold text-xs sm:text-sm border-b-2 border-emerald-500 text-emerald-400 flex items-center gap-2 transition";
+      } else if (tabName === 'links') {
+        tabLinks.classList.remove('hidden');
+        btnLinks.className = "px-4 py-2.5 font-bold text-xs sm:text-sm border-b-2 border-purple-500 text-purple-400 flex items-center gap-2 transition";
+      }
+    }
+
+    function openModal() { document.getElementById('timetable-modal').classList.remove('hidden'); }
+    function closeModal() { document.getElementById('timetable-modal').classList.add('hidden'); }
+
+    let errorAttempt = 0;
+    function handleImageError(img) {
+      if (errorAttempt === 0) {
+        img.src = "https://lh3.googleusercontent.com/d/1jQuTlQSsLbGsEdYz_nqDet4jfxtIRE4L";
+        errorAttempt++;
+      } else if (errorAttempt === 1) {
+        img.src = "timetable.jpg";
+        errorAttempt++;
+      }
+    }
+  </script>
+</body>
+  </html>
